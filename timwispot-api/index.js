@@ -1,10 +1,14 @@
 const fastify = require("fastify")({ logger: true })
-    (async () => {
-        try {
-            await fastify.listen(3000);
+const routes = require("./routes");
 
-        } catch (err) {
-            fastify.log.error(err);
-            process.exit(1);
-        }
-    })();
+routes.forEach(routeOptions => fastify.route(routeOptions));
+
+(async () => {
+    try {
+        await fastify.listen(3000);
+
+    } catch (err) {
+        fastify.log.error(err);
+        process.exit(1);
+    }
+})();

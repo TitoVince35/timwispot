@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "npx nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "precommit": "lint-staged",
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.js": [
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/TitoVince35/timwispot#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "fastify": "^3.20.2"
   },
   "devDependencies": {
