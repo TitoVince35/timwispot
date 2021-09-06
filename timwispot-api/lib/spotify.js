@@ -2,11 +2,16 @@ const axios = require('axios');
 axios.defaults.baseURL = "https://api.spotify.com";
 
 const MAX_RESULTS_DEFAULT = 20;
+let token = null
 
 // function connect(baseUrl, token) {
 //   axios.defaults.baseURL = baseUrl;
 //   axios.default.headers.common['Authorization'] = token;
 // }
+
+function setToken(token) {
+  //
+}
 
 function searchAlbumsAndArtists(q, maxResults = MAX_RESULTS_DEFAULT) {
   return axios.get('/v1/search', {
@@ -34,4 +39,4 @@ function getAlbums(ids) {
   });
 }
 
-module.exports = { searchAlbumsAndArtists, getArtistAlbums, getAlbums }
+module.exports = { setToken, searchAlbumsAndArtists, getArtistAlbums, getAlbums }

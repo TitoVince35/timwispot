@@ -1,7 +1,7 @@
 const fastify = require("fastify")({ logger: true })
 const routes = require("./routes");
 
-routes.forEach(routeOptions => fastify.route(routeOptions));
+routes.forEach(routeDescription => fastify.route(routeDescription));
 
 (async () => {
     try {
