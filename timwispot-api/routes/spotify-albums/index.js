@@ -1,4 +1,5 @@
-const { searchSpotifyAlbums, getSpotifyAlbums } = require('./spotify-albums/actions');
+
+const { searchSpotifyAlbums, getSpotifyAlbums, setSpotifyToken } = require('./actions');
 
 const AlbumsSchema = {
   type: 'object',
@@ -19,8 +20,21 @@ const AlbumsSchema = {
   }
 };
 
-module.exports = [
-  {
+const extractBearerToken = (request, reply, done) => {
+  const auth = request.headers.authorization;
+  if (auth && auth.length > 7) {
+    const token = auth.slice(7);
+    setSpotifyToken(token);
+    done();
+  }
+  else {
+    throw new Error('No auth token.')
+  }
+}
+
+module.exports = function (fastify, opts, done) {
+
+  fastify.route({
     method: 'GET',
     url: '/spotify-albums/search',
     schema: {
@@ -31,26 +45,30 @@ module.exports = [
         200: AlbumsSchema
       },
     },
-    handler: async (request) => {
+    preHandler: extractBearerToken,
+    handler: async function (request, reply) {
       const { q } = request.query;
-      return searchSpotifyAlbums(q);
-    }
-  },
+      reply.send({ albums: await searchSpotifyAlbums(q) });
+    },
+  });
 
-  {
+  fastify.route({
     method: 'GET',
     url: '/spotify-albums',
     schema: {
       querystring: {
         ids: { type: 'array', items: { type: 'string' } }
       },
-      // response: {
-      //   200: AlbumsSchema
-      // },
+      response: {
+        200: AlbumsSchema
+      },
     },
-    handler: async (request) => {
+    preHandler: extractBearerToken,
+    handler: async (request, reply) => {
       const { ids } = request.query;
-      return getSpotifyAlbums(ids);
+      reply.send(await getSpotifyAlbums(ids));
     }
-  }
-];
+  });
+
+  done();
+}

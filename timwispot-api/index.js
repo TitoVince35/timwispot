@@ -1,11 +1,13 @@
 const fastify = require("fastify")({ logger: true })
-const routes = require("./routes");
+fastify.register(require('fastify-cors'), {
+    origin: '*'
+});
 
-routes.forEach(routeDescription => fastify.route(routeDescription));
+fastify.register(require("./routes/spotify-albums"));
 
 (async () => {
     try {
-        await fastify.listen(3000);
+        await fastify.listen(9000);
 
     } catch (err) {
         fastify.log.error(err);

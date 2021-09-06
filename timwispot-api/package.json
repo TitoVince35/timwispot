@@ -26,7 +26,8 @@
   "homepage": "https://github.com/TitoVince35/timwispot#readme",
   "dependencies": {
     "axios": "^0.21.1",
-    "fastify": "^3.20.2"
+    "fastify": "^3.20.2",
+    "fastify-cors": "^6.0.2"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
