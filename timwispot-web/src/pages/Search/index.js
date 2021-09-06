@@ -14,14 +14,17 @@ export const SearchPage = () => {
   //   setSpotifyUser({ ...spotifyUser, token: state })
   // };
   const searchAlbums = (queryInput) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
     return fetch(`${API_HOSTNAME}/spotify-albums/search?q=${queryInput}`, { headers, origin: '' })
-      .then(response => response.body.albums)
+      .then(response => response.json())
+      .then(({ albums }) => albums);
   };
 
   const handleSubmit = async () => {
     const searchString = document.getElementById("searchString").value;
-    setFoundAlbums(await searchAlbums(searchString));
+    const fetchedAlbums = await searchAlbums(searchString);
+    // console.log(fetchedAlbums);
+    setFoundAlbums(fetchedAlbums);
   }
 
   return (

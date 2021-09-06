@@ -15,7 +15,7 @@ const ListAlbums = ({ albums }) => {
               <img src={album.image_url} alt="" />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary="{album.title}" secondary={
+          <ListItemText primary={album.title} secondary={
             <>
               <Typography variant="h4">{album.artist_name}</Typography><Typography variant="h6">{album.release_date}</Typography></>} />
         </ListItem>

@@ -3,7 +3,6 @@ const { searchAlbumsAndArtists, getArtistAlbums, getAlbums, setAuthToken } = req
 const MAX_ALBUM_RESPONSE = 20;
 
 function mapAlbumFormat(album) {
-  // console.log(album);
   const { id, artists, images, name, release_date, total_tracks } = album;
   try {
     return {
@@ -42,12 +41,6 @@ async function searchSpotifyAlbums(q) {
   const albums = result.albums.items.concat(artistsAlbums).splice(0, MAX_ALBUM_RESPONSE);
   // Just keep the good data
   return albums.map(mapAlbumFormat);
-  // console.log(albums);
-  // return albums.map(album => {
-  //   const mappedAlbum = mapAlbumFormat(album);
-  //   console.log(mappedAlbum);
-  //   return mappedAlbum;
-  // });
 }
 
 function setSpotifyToken(token) {
