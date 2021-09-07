@@ -1,20 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Box, Typography, TextField, Button } from "@material-ui/core";
-import { SpotifyUserContext } from "../../context/SpotifyUserContext";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { useSpotifyUser } from "../../context/SpotifyUserContext";
 import ListAlbums from "../../components/ListAlbums";
+import Snackbar from '@material-ui/core/Snackbar';
 
 const API_HOSTNAME = "http://localhost:9000";
 
 export const SearchPage = () => {
-  const { token } = useContext(SpotifyUserContext)
+  const { spotifyUser } = useSpotifyUser();
   const [foundAlbums, setFoundAlbums] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
 
-  // const handleChange = (event) => { setState(event.target.value) };
-  // const handleSubmit = () => {
-  //   setSpotifyUser({ ...spotifyUser, token: state })
-  // };
   const searchAlbums = (queryInput) => {
-    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+    const headers = spotifyUser.token ? { Authorization: `Bearer ${spotifyUser.token}` } : {};
     return fetch(`${API_HOSTNAME}/spotify-albums/search?q=${queryInput}`, { headers, origin: '' })
       .then(response => response.json())
       .then(({ albums }) => albums);
@@ -22,9 +22,16 @@ export const SearchPage = () => {
 
   const handleSubmit = async () => {
     const searchString = document.getElementById("searchString").value;
-    const fetchedAlbums = await searchAlbums(searchString);
-    // console.log(fetchedAlbums);
-    setFoundAlbums(fetchedAlbums);
+    setIsLoading(true);
+    setFetchError(null);
+    try {
+      const fetchedAlbums = await searchAlbums(searchString);
+      setFoundAlbums(fetchedAlbums);
+    }
+    catch (err) {
+      setFetchError("Failed search :", err);
+    }
+    setIsLoading(false);
   }
 
   return (
@@ -34,10 +41,14 @@ export const SearchPage = () => {
         <Typography>Recherche</Typography>
         <form noValidate autoComplete="off">
           <TextField id="searchString" variant="outlined" label="Nom de l'album / artiste" />
-          <Button variant="contained" color="primary" onClick={handleSubmit}>Valider</Button>
+          {isLoading
+            ? <CircularProgress />
+            : <Button variant="contained" color="primary" onClick={handleSubmit}>Valider</Button>
+          }
         </form>
       </Box>
       {foundAlbums.length && <ListAlbums albums={foundAlbums} />}
+      <Snackbar open={Boolean(fetchError)}>{fetchError}</Snackbar>
     </>
   );
 };

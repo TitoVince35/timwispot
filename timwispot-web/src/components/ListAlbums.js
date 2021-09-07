@@ -3,21 +3,18 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 
 const ListAlbums = ({ albums }) => {
   return (
     <List>
-      {albums.map(album => (
-        <ListItem>
+      {albums.map((album, i) => (
+        <ListItem key={album.id}>
           <ListItemAvatar>
-            <Avatar>
-              <img src={album.image_url} alt="" />
-            </Avatar>
+            <img src={album.image_url} alt="" />
           </ListItemAvatar>
-          <ListItemText primary={album.title} secondary={
+          <ListItemText primary={<Typography variant="h4">{`${i + 1}. ${album.title}`}</Typography>} secondary={
             <>
-              <Typography variant="h4">{album.artist_name}</Typography><Typography variant="h6">{album.release_date}</Typography></>} />
+              <Typography variant="h5">{album.artist_name}</Typography><Typography variant="h6">{album.release_date}</Typography></>} />
         </ListItem>
       ))}
     </List>
