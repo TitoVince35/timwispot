@@ -5,7 +5,7 @@ const MAX_RESULTS_DEFAULT = 20;
 let authToken = ""
 
 function setAuthToken(token) {
-  console.log("Setting token:", token)
+  // console.log("Setting token:", token)
   authToken = token;
 }
 

@@ -29,10 +29,7 @@ const extractBearerToken = (request, reply, done) => {
     done();
   }
   else {
-    console.log("Using default token");
-    setSpotifyToken("BQBiCm06wYnecv9uaeqIRDU3DsV0GDKlGwmoVsn7Cxw1sdz1G3zQFv72TgwK770AUD4xdbXz2w69AYzHN36cqLUEvOlTaoeN5cgs6kteFkBJsP76LL0kNFLYcIwqEHPMF4o0lIqhW7lD");
-    done();
-    // throw new Error('No auth token.')
+    throw new Error('No auth token (or wrong format).')
   }
 }
 
